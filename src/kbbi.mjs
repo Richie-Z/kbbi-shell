@@ -22,7 +22,7 @@ function getOLKategoriPenjelasan($, element) {
 
 function getULKategoriPenjelasan($, element) {
   let kategoriEl = $(element).find("span[title]");
-  let kategori = kategoriEl.attr("title");
+  let kategori = kategoriEl.attr("title") ?? "";
   let subKategori = "";
   if (kategoriEl.length > 1)
     subKategori = kategoriEl
@@ -51,14 +51,14 @@ function getKategoriPenjelasan($, element) {
   let next = $(element);
   let loop = 0;
   let kategori = "";
-  let penjelasan = "";
+  let penjelasan = "cari: ";
   if (next.is("[style]")) {
     while (next.prop("tagName") !== "OL") {
       next = next.next();
     }
     return getOLKategoriPenjelasan($, next);
   } else {
-    while (next.prop("tagName") !== "HR") {
+    while (next.prop("tagName") !== "HR" && next.prop("tagName") !== "H2") {
       if (loop === 0) {
         kategori = next.attr("title");
       } else {
