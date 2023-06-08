@@ -21,7 +21,22 @@ function getOLKategoriPenjelasan($, element) {
 }
 
 function getULKategoriPenjelasan($, element) {
-  let kategori = $(element).find("span[title]").attr("title");
+  let kategoriEl = $(element).find("span[title]");
+  let kategori = kategoriEl.attr("title");
+  let subKategori = "";
+  if (kategoriEl.length > 1)
+    subKategori = kategoriEl
+      .slice(1)
+      .map(function () {
+        return $(this).attr("title");
+      })
+      .get()
+      .join(", ");
+
+  kategoriEl.each(function () {
+    $(this).remove();
+  });
+
   let penjelasan = $(element)
     .contents()
     .map(function () {
@@ -29,7 +44,7 @@ function getULKategoriPenjelasan($, element) {
     })
     .get()
     .join("");
-  return { kategori, penjelasan };
+  return { kategori, subKategori, penjelasan };
 }
 
 function getKategoriPenjelasan($, element) {
@@ -37,14 +52,21 @@ function getKategoriPenjelasan($, element) {
   let loop = 0;
   let kategori = "";
   let penjelasan = "";
-  while (next.prop("tagName") !== "HR") {
-    if (loop === 0) {
-      kategori = next.attr("title");
-    } else {
-      penjelasan += next.text().trim();
+  if (next.is("[style]")) {
+    while (next.prop("tagName") !== "OL") {
+      next = next.next();
     }
-    loop++;
-    next = next.next();
+    return getOLKategoriPenjelasan($, next);
+  } else {
+    while (next.prop("tagName") !== "HR") {
+      if (loop === 0) {
+        kategori = next.attr("title");
+      } else {
+        penjelasan += next.text().trim();
+      }
+      loop++;
+      next = next.next();
+    }
   }
   return { kategori, penjelasan };
 }
