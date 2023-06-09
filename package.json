@@ -2,12 +2,23 @@
   "name": "kbbi-shell",
   "version": "1.0.0",
   "description": "KBBI on your shell!",
+  "main": "src/index.mjs",
+  "bin": "bin/kbbi.js",
   "type": "module",
   "scripts": {
-    "kbbi": "node src/index.mjs"
+    "start": "node src/index.mjs"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Richie-Z/kbbi-shell.git"
+  },
+  "keywords": [
+    "kbbi",
+    "shell",
+    "cli"
+  ],
+  "author": "Richie-Z",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^8.41.0"
   },
