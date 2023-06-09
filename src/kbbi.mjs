@@ -54,10 +54,14 @@ function getKategoriPenjelasan($, element) {
   let kategori = "";
   let penjelasan = "cari: ";
   if (next.is("[style]")) {
-    while (next.prop("tagName") !== "OL") {
+    let hrStyledSkipped = 0;
+    while (hrStyledSkipped < 2) {
+      if (next.prop("tagName") === "HR" && next.is("[style]"))
+        hrStyledSkipped += 1;
       next = next.next();
     }
-    return getOLKategoriPenjelasan($, next);
+    if (next.prop("tagName") === "OL") return getOLKategoriPenjelasan($, next);
+    else return getULKategoriPenjelasan($, next);
   } else {
     while (next.prop("tagName") !== "HR" && next.prop("tagName") !== "H2") {
       if (loop === 0) {
