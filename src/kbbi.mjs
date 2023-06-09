@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import axios from "axios";
+import color from "colors-cli/safe";
 
 async function fetchData(url) {
   try {
@@ -68,14 +69,52 @@ function getKategoriPenjelasan($, element) {
       next = next.next();
     }
   }
-  return { kategori, penjelasan };
+  return { kategori, subKategori: "", penjelasan };
+}
+
+export function format(param, data) {
+  console.log(color.x45.bold.underline(param));
+
+  const juduls = Object.keys(data);
+  for (const judul of juduls) {
+    console.log(`\\${judul}\\`);
+    let isi = data[judul]?.penjelasan;
+    if (typeof isi === "string") isi = [data[judul]];
+    const penjelasan = isi.reduce(
+      (result, { kategori, subKategori, penjelasan }) => {
+        if (!result[kategori]) {
+          result[kategori] = { penjelasan: [] };
+        }
+        result[kategori].penjelasan.push(
+          (typeof subKategori !== undefined && subKategori !== ""
+            ? `[${color.italic.cyan(subKategori.split(":").join(""))}] `
+            : "") + penjelasan
+        );
+        return result;
+      },
+      {}
+    );
+    const kategori = Object.keys(penjelasan);
+    for (let i = 0; i < kategori.length; i++) {
+      const kat = kategori[i];
+      console.log(color.yellow(kat));
+
+      penjelasan[kat].penjelasan.forEach((el) => {
+        el.split(":").forEach((line, index) => {
+          const trimmedLine = line.trim();
+          if (index === 0) console.log(" ".repeat(4) + color.bold(trimmedLine));
+          else console.log(" ".repeat(6) + trimmedLine);
+        });
+      });
+      console.log();
+    }
+  }
 }
 
 export async function scrapeData(param) {
   const data = await fetchData(`https://kbbi.kemdikbud.go.id/entri/${param}`);
 
   const $ = cheerio.load(data);
-
   let resultList = [];
 
   for (let index = 0; index < $("h2").length; index++) {
