@@ -3,7 +3,7 @@ import { scrapeData, format } from "./kbbi.mjs";
 
 const program = new Command();
 program
-  .version("1.0.0")
+  .version("1.0.1")
   .arguments("<query>")
   .description("KBBI on your shell!")
   .action(async (query) => {
