@@ -1,13 +1,16 @@
-import { Command } from "commander";
+import { Command, Option } from "commander";
 import { scrapeData, format } from "./kbbi.mjs";
 
 const program = new Command();
 program
-  .version("1.0.1")
-  .arguments("<query>")
+  .version("1.0.2")
+  .arguments("<query>", "Text to search")
   .description("KBBI on your shell!")
-  .action(async (query) => {
-    format(query, await scrapeData(query));
+  .option('-j, --json', "Output as JSON")
+  .action(async (query, options) => {
+    if (options.json)
+      return console.log(await scrapeData(query))
+    return format(query, await scrapeData(query))
   });
 
 export default program.parse(process.argv);
