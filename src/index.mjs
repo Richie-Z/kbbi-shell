@@ -1,9 +1,9 @@
-import { Command, Option } from "commander";
+import { Command } from "commander";
 import { scrapeData, format } from "./kbbi.mjs";
 
 const program = new Command();
 program
-  .version("1.0.2")
+  .version("1.0.3")
   .arguments("<query>", "Text to search")
   .description("KBBI on your shell!")
   .option('-j, --json', "Output as JSON")

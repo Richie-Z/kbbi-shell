@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import axios from "axios";
 import color from "colors-cli/safe";
 
-async function fetchData(url) {
+export async function fetchData(url) {
   try {
     const { data } = await axios.get(url);
     return data;
@@ -14,7 +14,7 @@ async function fetchData(url) {
 function getOLKategoriPenjelasan($, element) {
   let penjelasan = $(element)
     .contents()
-    .map(function () {
+    .map(function() {
       return getULKategoriPenjelasan($, this);
     })
     .get();
@@ -28,19 +28,19 @@ function getULKategoriPenjelasan($, element) {
   if (kategoriEl.length > 1)
     subKategori = kategoriEl
       .slice(1)
-      .map(function () {
+      .map(function() {
         return $(this).attr("title");
       })
       .get()
       .join(", ");
 
-  kategoriEl.each(function () {
+  kategoriEl.each(function() {
     $(this).remove();
   });
 
   let penjelasan = $(element)
     .contents()
-    .map(function () {
+    .map(function() {
       return $(this).text().trim();
     })
     .get()
@@ -81,7 +81,13 @@ export function format(param, data) {
 
   const juduls = Object.keys(data);
   for (const judul of juduls) {
+    if (typeof data[judul].kategori === "undefined" && data.length === 1) {
+      console.log(color.x160.bold("Keyword not found!"))
+      break
+    }
+
     console.log(`\\${judul}\\`);
+
     let isi = data[judul]?.penjelasan;
     if (typeof isi === "string") isi = [data[judul]];
     const penjelasan = isi.reduce(
@@ -89,8 +95,8 @@ export function format(param, data) {
         if (!result[kategori]) {
           result[kategori] = { penjelasan: [] };
         }
-        result[kategori].penjelasan.push(
-          (typeof subKategori !== undefined && subKategori !== ""
+        result[kategori].penjelasan.push(`${result[kategori].penjelasan.length + 1}. ` +
+          (typeof subKategori !== "undefined" && subKategori !== ""
             ? `[${color.italic.cyan(subKategori.split(":").join(""))}] `
             : "") + penjelasan
         );
@@ -98,6 +104,7 @@ export function format(param, data) {
       },
       {}
     );
+
     const kategori = Object.keys(penjelasan);
     for (let i = 0; i < kategori.length; i++) {
       const kat = kategori[i];
@@ -107,7 +114,7 @@ export function format(param, data) {
         el.split(":").forEach((line, index) => {
           const trimmedLine = line.trim();
           if (index === 0) console.log(" ".repeat(4) + color.bold(trimmedLine));
-          else console.log(" ".repeat(6) + trimmedLine);
+          else console.log(" ".repeat(6) + `cth: ${color.italic(trimmedLine)}`);
         });
       });
       console.log();
