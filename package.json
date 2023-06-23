@@ -6,7 +6,7 @@
   "bin": "bin/kbbi.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.mjs",
+    "start": "node src/index.mjs"
   },
   "repository": {
     "type": "git",
