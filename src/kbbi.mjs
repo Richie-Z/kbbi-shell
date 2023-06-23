@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import axios from "axios";
 import color from "colors-cli/safe";
 
-export async function fetchData(url) {
+async function fetchData(url) {
   try {
     const { data } = await axios.get(url);
     return data;
