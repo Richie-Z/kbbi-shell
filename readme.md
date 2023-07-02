@@ -34,8 +34,16 @@ Run program by
 
 query is the word you wanna search
 
+#### Available options
+|Options| Example  | Description |
+|--|--|--|
+| -j / --json | kbbi-shell sial -j| output as json |
+| -s / --sinonim | kbbi-shell tampan -s| search query sinonim |
+| -a / --antonim | kbbi-shell tampan -a| search query antonim |
+| -sa / --sinonim_antonim | kbbi-shell sial -sa| search query sinonim and antonim |
+
 #### TODO
 
-- [ ] Add _Sinonim_ option
-- [ ] Add _Akronim_ option
+- [x] Add _Sinonim_ option
+- [x] Add _Akronim_ option
 - [ ] Add _EYD_ option
