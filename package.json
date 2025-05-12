@@ -1,6 +1,6 @@
 {
   "name": "kbbi-shell",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "KBBI on your shell!",
   "main": "src/index.mjs",
   "bin": "bin/kbbi.js",

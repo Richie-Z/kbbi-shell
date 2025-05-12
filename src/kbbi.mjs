@@ -14,7 +14,7 @@ async function fetchData(url) {
 function getOLKategoriPenjelasan($, element) {
   let penjelasan = $(element)
     .contents()
-    .map(function() {
+    .map(function () {
       return getULKategoriPenjelasan($, this);
     })
     .get();
@@ -28,19 +28,19 @@ function getULKategoriPenjelasan($, element) {
   if (kategoriEl.length > 1)
     subKategori = kategoriEl
       .slice(1)
-      .map(function() {
+      .map(function () {
         return $(this).attr("title");
       })
       .get()
       .join(", ");
 
-  kategoriEl.each(function() {
+  kategoriEl.each(function () {
     $(this).remove();
   });
 
   let penjelasan = $(element)
     .contents()
-    .map(function() {
+    .map(function () {
       return $(this).text().trim();
     })
     .get()
@@ -134,6 +134,8 @@ export async function scrapeData(param) {
       .eq(index)
       .next()
       .next()
+      .next()
+      .next()
       .each((key, element) => {
         switch ($(element).prop("tagName")) {
           case "OL":
@@ -145,6 +147,7 @@ export async function scrapeData(param) {
           default:
             resultList[judul] = getKategoriPenjelasan($, element);
             break;
+
         }
       });
   }
